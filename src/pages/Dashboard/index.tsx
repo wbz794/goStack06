@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import income from '../../assets/income.svg';
@@ -28,29 +29,6 @@ interface Balance {
   outcome: number;
   total: number;
 }
-
-// Não estava funcionando no teste quando utilizada a func dentro do utils...
-const ff = (value: number, type?: string): string => {
-  switch (type) {
-    case 'income':
-      return Intl.NumberFormat('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(value);
-
-    case 'outcome':
-      return `- ${Intl.NumberFormat('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(value)}`;
-
-    default:
-      return Intl.NumberFormat('pt-br', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(value);
-  }
-};
 
 const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -112,11 +90,13 @@ const Dashboard: React.FC = () => {
 
               <tbody>
                 {transactions.map(transaction => {
-                  const value = ff(transaction.value, transaction.type);
                   return (
                     <tr key={transaction.id}>
                       <td className="title">{transaction.title}</td>
-                      <td className="income">{value}</td>
+                      <td className="income">
+                        {transaction.type === 'outcome' && '-'}{' '}
+                        {formatValue(transaction.value)}
+                      </td>
                       <td>{transaction.category.title}</td>
                       <td>{transaction.created_at}</td>
                     </tr>

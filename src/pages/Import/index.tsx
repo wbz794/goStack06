@@ -27,8 +27,7 @@ const Import: React.FC = () => {
     // TODO
     data.append('file', uploadedFiles[0].file, uploadedFiles[0].name);
     try {
-      const a = await api.post('/transactions/import', data);
-      console.log(a);
+      await api.post('/transactions/import', data);
     } catch (err) {
       console.log(err.response.error);
     }
